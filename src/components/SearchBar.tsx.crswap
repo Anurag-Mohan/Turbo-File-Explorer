@@ -1,0 +1,76 @@
+import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
+import React, { useState } from "react";
+import { useSearchContext } from "../SearchContext";
+
+export function SearchBar() {
+  const context = useSearchContext();
+const setSearch = context.setSearch;
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const performSearch = async (query) => {
+    // Implement your search logic here and return the search results
+    try {
+      const desktopPath = await desktopDir();
+      const searchResults = await invoke('search_files', { query, path: desktopPath });
+      return searchResults;
+    } catch (error) {
+      console.error("Error:", error);
+      return [];
+    }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    // Perform the search and set the search results in the context
+    const searchResults = await performSearch(searchQuery);
+    setSearch(searchResults);
+  };
+
+  return (
+    <nav className="navbar bg-body-tertiary" data-bs-theme="dark">
+      <div className="container-fluid">
+        <div>
+          <button
+            style={{ border: "0", padding: "0", backgroundColor: "inherit", margin: "0 30px 0 30px" }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <FaArrowLeft />
+          </button>
+          <button
+            style={{ border: "0", padding: "0", backgroundColor: "inherit", margin: "0 30px 0 30px" }}
+            onClick={() => {
+              navigate(1);
+            }}
+          >
+            <FaArrowRight />
+          </button>
+        </div>
+
+        <a className="navbar-brand text-white ">
+          <h2>
+            Turbo<h1>X</h1>plorer
+          </h2>
+        </a>
+
+        <form className="d-flex" role="search" onSubmit={handleSearch}>
+          <input
+            className="form-control me-2"
+            type="search"
+            placeholder="Search File"
+            aria-label="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button className="btn btn-outline-info" type="submit">
+            <FaSearch />
+          </button>
+        </form>
+      </div>
+    </nav>
+  );
+}
+
+export default SearchBar;
