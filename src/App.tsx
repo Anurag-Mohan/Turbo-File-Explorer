@@ -8,22 +8,42 @@ import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import FileList from "./components/FileList";
+
+
+//Layout
 import AppLayout from "./Layout/AppLayout";
+import { MyContextProvider } from "./Context/globalPathContext";
+import FolderList from "./components/FolderList";
+import SearchList from "./components/SearchList";
+
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+
     <Route path="/" element={<AppLayout />}>
-      <Route index element={<div></div>} />
-      <Route path="List" element={<FileList />}>
-        <Route path=":menu" element={<FileList />} />
-      </Route>
+      <Route path="List" element={<FolderList/>} />
+      <Route path="Slist" element={<SearchList/>} />
     </Route>
+          
+    
+  
+    
   )
 );
-
 function App() {
-  return <RouterProvider router={router} />;
+
+
+
+  return (
+   <MyContextProvider>
+   <RouterProvider router={router} />
+   </MyContextProvider>
+      
+    
+
+  );
 }
 
 export default App;

@@ -4,10 +4,13 @@
   padding: 0px;
 }
 
-h1{
-  display: inline;
-  color: #0dcaf0;
+
+.title-x-style{
+  font-size:"34px";
+  color:"#0dcaf0"
 }
+
+
 
 
 h6{
@@ -32,29 +35,24 @@ body{
 
 }
 
-hr {
-  background: linear-gradient(90deg, #3af00d, #0dcaf0); 
-  border: 0;
-  height: 2px; 
-  margin: 1rem ; 
+hr{
+  color: #0dcaf0;
+  margin: 1rem
 }
+
 /*back button style*/
-.drive-container {
+
+.drive-container{
   width: 180px;
   height: fit-content;
   font-size: 2em;
   background-color: gray;
-  border-radius: 5px;
+  border-radius: 8px;
+}
 
-}
-.drive-container:hover{
-  color: rgb(0, 255, 128);
-}
-.line {
-  height: 2px;
-  margin-top: 5px;
-  width: 100%;
-  background: linear-gradient(to right, red, blue); 
-  background-size: 200% 100%; 
-  
+.search-results-count {
+  color:#efa20d;
+  background-color: #6d4a06; /* Specify your desired background color */
+  padding: 1px; /* Adjust padding as needed */
+  margin-bottom: 10px; /* Add some spacing between count and table */
 }

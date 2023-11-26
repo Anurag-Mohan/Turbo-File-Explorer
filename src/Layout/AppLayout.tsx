@@ -10,9 +10,19 @@ import {
   FaImages,
 } from "react-icons/fa";
 import Drive from "../components/Drive";
-import { Route } from "react-router-dom";
-import FileList from "./components/FileList";
-import React, { useState } from "react";
+import { audioDir, desktopDir, documentDir, downloadDir, pictureDir, videoDir } from '@tauri-apps/api/path';
+import { useMyContext } from "../Context/globalPathContext";
+import { useState } from "react";
+
+
+
+const desktopPath=await desktopDir();
+const downloadPath=await downloadDir();
+const documentPath=await documentDir();
+const picturePath=await pictureDir();
+const musicPath=await audioDir();
+const videoPath=await videoDir();
+
 
 function AppLayout() {
   const [selectedItemId, setSelectedItemId] = useState(0);
@@ -20,13 +30,21 @@ function AppLayout() {
   const handleMenuItemClick = (itemId) => {
     setSelectedItemId(itemId);
   };
+  
+    const context=useMyContext();
 
+   
 
+     function handlePath(path:string){ 
+      context.setGlobalState(path);
+    }
+    
 
+ 
   return (
     <>
     
-
+      <SearchBar />
       <div
         style={{
           display: "flex",
@@ -34,155 +52,171 @@ function AppLayout() {
           minHeight: "89.5vh",
         }}
       >
-        <Sidebar backgroundColor="#212529" width="210px">
-        <a className="navbar-brand text-white ">
-            <h4>
-              <center>
-              Turbo<h1>X</h1>plorer
-              </center>
-            </h4>
-            <div className="line"></div>
-          </a>
-
+        <Sidebar backgroundColor="#052545" width="210px"
+       
+        >
           <div className="sidebar-heading mt-3 mb-3">Quick Access</div>
           <Menu>
-          <MenuItem
-            icon={<FaDesktop />}
-            component={<Link to={"List/Desktop"} />}
-            onClick={() => handleMenuItemClick(0)}
-            className={selectedItemId === 0 ? "selected" : ""}
-            data-index={0}
-            rootStyles={{
-              backgroundColor: selectedItemId === 0 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 0 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-              "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Desktop
-          </MenuItem>
-          <MenuItem
-            icon={<FaFile />}
-            component={<Link to={"List/Documents"} />}
-            onClick={() => handleMenuItemClick(1)}
-            className={selectedItemId === 1 ? "selected" : ""}
-            data-index={1}
-            rootStyles={{
-              backgroundColor: selectedItemId === 1 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 1 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-               "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Documents
-          </MenuItem>
-          <MenuItem
-            icon={<FaDownload />}
-            component={<Link to={"List/Download"} />}
-            onClick={() => handleMenuItemClick(2)}
-            className={selectedItemId === 2 ? "selected" : ""}
-            data-index={2}
-            rootStyles={{
-              backgroundColor: selectedItemId === 2 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 2 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-              "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Download
-          </MenuItem>
-          <MenuItem
-            icon={<FaImages />}
-            component={<Link to={"List/Picture"} />}
-            onClick={() => handleMenuItemClick(3)}
-            className={selectedItemId === 3 ? "selected" : ""}
-            data-index={3}
-            rootStyles={{
-              backgroundColor: selectedItemId === 3 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 3 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-              "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Picture
-          </MenuItem>
-          <MenuItem
-            icon={<FaMusic />}
-            component={<Link to={"List/Musics"} />}
-            onClick={() => handleMenuItemClick(4)}
-            className={selectedItemId === 4 ? "selected" : ""}
-            data-index={4}
-            rootStyles={{
-              backgroundColor: selectedItemId === 4 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 4 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-              "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Musics
-          </MenuItem>
-          <MenuItem
-            icon={<FaVideo />}
-            component={<Link to={"List/Videos"} />}
-            onClick={() => handleMenuItemClick(5)}
-            className={selectedItemId === 5 ? "selected" : ""}
-            data-index={5}
-            rootStyles={{
-              backgroundColor: selectedItemId === 5 ? "#0dcaf0" : "#212529",
-              "&:hover": {
-                backgroundColor: selectedItemId === 5 ? "#0dcaf0" : "#212529",
-                color: "green", 
-              },
-              "&.selected": {
-                backgroundColor: "#0dcaf0", // Clicked background color
-                color: "#000099", // Change this to the text color you prefer when clicked
-              },
-              color: "white", 
-            }}
-          >
-            Videos
-          </MenuItem>
-        </Menu>
+  <MenuItem
+    icon={<FaDesktop />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(desktopPath);
+      handleMenuItemClick(0);
+    }}
+    className={selectedItemId === 0 ? "selected" : ""}
+    data-index={0}
+    rootStyles={{
+      backgroundColor: selectedItemId === 0 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 0 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0", 
+        color: "#000099",
+      },
+      color: "white", 
+    }}
+  >
+    Desktop
+  </MenuItem>
+  <MenuItem
+    icon={<FaFile />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(documentPath);
+      handleMenuItemClick(1);
+    }}
+    className={selectedItemId === 1 ? "selected" : ""}
+    data-index={1}
+    rootStyles={{
+      backgroundColor: selectedItemId === 1 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 1 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0", 
+        color: "#000099", 
+      },
+      color: "white", 
+    }}
+  >
+    Documents
+  </MenuItem>
+  <MenuItem
+    icon={<FaDownload />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(downloadPath);
+      handleMenuItemClick(2);
+    }}
+    className={selectedItemId === 2 ? "selected" : ""}
+    data-index={2}
+    rootStyles={{
+      backgroundColor: selectedItemId === 2 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 2 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0", 
+        color: "#000099", 
+      },
+      color: "white", 
+    }}
+  >
+    Download
+  </MenuItem>
+  <MenuItem
+    icon={<FaImages />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(picturePath);
+      handleMenuItemClick(3);
+    }}
+    className={selectedItemId === 3 ? "selected" : ""}
+    data-index={3}
+    rootStyles={{
+      backgroundColor: selectedItemId === 3 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 3 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0", 
+        color: "#000099", 
+      },
+      color: "white", 
+    }}
+  >
+    Picture
+  </MenuItem>
+  <MenuItem
+    icon={<FaMusic />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(musicPath);
+      handleMenuItemClick(4);
+    }}
+    className={selectedItemId === 4 ? "selected" : ""}
+    data-index={4}
+    rootStyles={{
+      backgroundColor: selectedItemId === 4 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 4 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0",
+        color: "#000099", 
+      },
+      color: "white", 
+    }}
+  >
+    Music
+  </MenuItem>
+  <MenuItem
+    icon={<FaVideo />}
+    component={<Link to={"List"} />}
+    onClick={() => {
+      handlePath(videoPath);
+      handleMenuItemClick(5);
+    }}
+    className={selectedItemId === 5 ? "selected" : ""}
+    data-index={5}
+    rootStyles={{
+      backgroundColor: selectedItemId === 5 ? "#0dcaf0" : "#052545",
+      "&:hover": {
+        backgroundColor: selectedItemId === 5 ? "#0dcaf0" : "#052545",
+        color: "#065d6d", 
+      },
+      "&.selected": {
+        backgroundColor: "#0dcaf0", 
+        color: "#000099", 
+      },
+      color: "white", 
+    }}
+  >
+    Videos
+  </MenuItem>
+</Menu>
 
           <hr />
           <div className="sidebar-heading mt-3 m-3">Drive</div>
-          <Drive type={"C:"} color={"primary"} space={"35"} />
-          <Drive type={"D:"} color={"success"} space={"50"} />
-          <Drive type={"E:"} color={"warning"} space={"75"} />
-          <Drive type={"F:"} color={"danger"} space={"90"} />
+          <Drive type={"C:"} color={"success"} space={"25"} />
+          <Drive type={"D:"} color={"warning"} space={"70"} />
+          <Drive type={"E:"} color={"danger"} space={"90"} />
         </Sidebar>
-        <Outlet />
+        <div style={{
+          width:"100vw",
+          height:"inherit"
+        }}>
+        <Outlet  />
+        </div>
       </div>
+      
     </>
   );
 }
