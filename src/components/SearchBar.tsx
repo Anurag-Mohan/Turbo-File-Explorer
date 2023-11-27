@@ -51,7 +51,7 @@ export function SearchBar() {
 
 
   return (
-    <nav className="navbar bg-body-tertiary " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
       <div className="container-fluid">
         <div>
           <button
@@ -60,7 +60,7 @@ export function SearchBar() {
               navigate(-1);
             }}
           >
-            <FaArrowLeft />
+            <FaArrowLeft color="aqua"/>
           </button>
           <button
             style={arrowButtonStyle}
@@ -68,7 +68,7 @@ export function SearchBar() {
               navigate(+1);
             }}
           >
-            <FaArrowRight />
+            <FaArrowRight color="aqua" />
           </button>
         </div>
 
@@ -93,6 +93,7 @@ export function SearchBar() {
             placeholder={context.globalState}
             aria-label="Search"
             onChange={(event)=>{handleChange(event)}}
+            style={{ backgroundColor: '#c2b693', color: 'black' }}
           />
           <button className="btn btn-outline-info" type="submit">
             Search
