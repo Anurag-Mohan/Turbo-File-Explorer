@@ -13,6 +13,8 @@ import Drive from "../components/Drive";
 import { audioDir, desktopDir, documentDir, downloadDir, pictureDir, videoDir } from '@tauri-apps/api/path';
 import { useMyContext } from "../Context/globalPathContext";
 import { useState } from "react";
+import React, { useEffect } from 'react';
+import { invoke } from "@tauri-apps/api";
 
 
 
@@ -26,6 +28,7 @@ const videoPath=await videoDir();
 
 function AppLayout() {
   const [selectedItemId, setSelectedItemId] = useState(0);
+  const [drives, setDrives] = useState([]);
 
   const handleMenuItemClick = (itemId) => {
     setSelectedItemId(itemId);
@@ -38,9 +41,19 @@ function AppLayout() {
      function handlePath(path:string){ 
       context.setGlobalState(path);
     }
+    useEffect(() => {
+      
+      const fetchDriveData = async () => {
+        try {
+          const response = await invoke<DriveProps[]>('get_drive_data');
+          setDrives(response || []);
+        } catch (error) {
+          console.error('Error fetching drive data:', error);
+        }
+      };
     
-
- 
+      fetchDriveData();
+    }, []);
   return (
     <>
     
@@ -203,11 +216,11 @@ function AppLayout() {
   </MenuItem>
 </Menu>
 
-          <hr />
-          <div className="sidebar-heading mt-3 m-3">Drive</div>
-          <Drive type={"C:"} color={"success"} space={"25"} />
-          <Drive type={"D:"} color={"warning"} space={"70"} />
-          <Drive type={"E:"} color={"danger"} space={"90"} />
+<hr />
+        <div className="sidebar-heading mt-3 m-3">Drive</div>
+        {drives.map((drive, index) => (
+          <Drive key={index} name={drive.name} color={drive.color} space={drive.space} />
+        ))}
         </Sidebar>
         <div style={{
           width:"100vw",

@@ -46,13 +46,33 @@ hr{
   width: 180px;
   height: fit-content;
   font-size: 2em;
-  background-color: gray;
+  background-color: #5c91c6;
   border-radius: 8px;
 }
 
 .search-results-count {
   color:#efa20d;
-  background-color: #6d4a06; /* Specify your desired background color */
-  padding: 1px; /* Adjust padding as needed */
-  margin-bottom: 10px; /* Add some spacing between count and table */
+  background-color: #6d4a06; 
+  padding: 1px; 
+  margin-bottom: 10px; 
 }
+
+.custom-table-heading th {
+  background-color: #005559;
+  color: white;
+  padding: 1px;
+}
+.custom-navbar {
+  background-color:#0a1b1a
+}
+.table-container {
+  
+  overflow-y: auto; 
+}
+
+.custom-table-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1; 
+}
+
