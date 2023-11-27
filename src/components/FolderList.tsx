@@ -22,8 +22,14 @@ function FolderList() {
 
   const getFileName = (filePath: string): string => {
     const pathParts = filePath.split("\\");
-    return pathParts[pathParts.length - 1];
-  };
+    let filename: string = pathParts[pathParts.length - 1];
+    if(filename==""){
+      filename="..";
+     }
+    
+      return filename;
+    
+    };
 
   useEffect(() => {
     const getList = async () => {

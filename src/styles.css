@@ -55,6 +55,7 @@ hr{
   background-color: #6d4a06; 
   padding: 1px; 
   margin-bottom: 10px; 
+
 }
 
 .custom-table-heading th {
@@ -63,7 +64,8 @@ hr{
   padding: 1px;
 }
 .custom-navbar {
-  background-color:#0a1b1a
+  background-color:#0a1b1a;
+  height:auto
 }
 .table-container {
   

@@ -17,6 +17,13 @@ import React, { useEffect } from 'react';
 import { invoke } from "@tauri-apps/api";
 
 
+interface Volume {
+  name: string;
+  mountpoint: string;
+  available_gb: number;
+  used_gb: number;
+  total_gb: number;
+}
 
 const desktopPath=await desktopDir();
 const downloadPath=await downloadDir();
@@ -29,6 +36,7 @@ const videoPath=await videoDir();
 function AppLayout() {
   const [selectedItemId, setSelectedItemId] = useState(0);
   const [drives, setDrives] = useState([]);
+  const [volumes,setVolumes]=useState<Volume[]>([]);
 
   const handleMenuItemClick = (itemId) => {
     setSelectedItemId(itemId);
@@ -41,19 +49,17 @@ function AppLayout() {
      function handlePath(path:string){ 
       context.setGlobalState(path);
     }
-    useEffect(() => {
-      
-      const fetchDriveData = async () => {
-        try {
-          const response = await invoke<DriveProps[]>('get_drive_data');
-          setDrives(response || []);
-        } catch (error) {
-          console.error('Error fetching drive data:', error);
-        }
-      };
-    
-      fetchDriveData();
-    }, []);
+   
+  useEffect(()=>{
+
+    const getVolume=async ()=>{
+      let volumeValue=await invoke<Volume[]>('get_volume');  
+      setVolumes(volumeValue);
+    }
+  
+      getVolume();
+  
+  },[context.globalState])
   return (
     <>
     
@@ -217,10 +223,14 @@ function AppLayout() {
 </Menu>
 
 <hr />
-        <div className="sidebar-heading mt-3 m-3">Drive</div>
-        {drives.map((drive, index) => (
-          <Drive key={index} name={drive.name} color={drive.color} space={drive.space} />
-        ))}
+         <div className="sidebar-heading mt-3 m-3">Drive</div>
+          {
+            volumes.map(
+             (volume)=>(
+                <Drive  color={"danger"} space={volume.available_gb.toString()} available_space={volume.available_gb} total_space={volume.total_gb} used_space={volume.used_gb} mountPoint={volume.mountpoint} name={volume.name}></Drive>
+             )
+            )
+          }
         </Sidebar>
         <div style={{
           width:"100vw",
