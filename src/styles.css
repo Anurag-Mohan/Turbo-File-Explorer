@@ -40,7 +40,7 @@ hr{
   margin: 1rem
 }
 
-/*back button style*/
+
 
 .drive-container{
   width: 180px;
@@ -78,3 +78,69 @@ hr{
   z-index: 1; 
 }
 
+.custom-table-heading th {
+  text-align: left;
+}
+
+.name-header {
+  float: left;
+}
+
+.results-count-header {
+  float: right;
+}
+.total-results-color {
+  color: #69aef4;
+}
+.no-results-message {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+  color: hwb(236 2% 60%); 
+}
+
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block; 
+}
+
+.table-container {
+  overflow-y: auto;
+  position: relative; 
+}
+
+@keyframes gradientMove {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.animated-x::after {
+  content: 'X';
+  display: inline-block;
+  background: linear-gradient(90deg, hsl(113, 100%, 42%), #0077cc, hsl(303, 100%, 42%));
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: gradientMove 2s infinite, pulse 1s infinite; 
+  font-size: 45px;
+}

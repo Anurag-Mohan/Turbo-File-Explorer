@@ -2,6 +2,8 @@ import { invoke } from "@tauri-apps/api";
 import { useEffect, useState, useRef } from "react";
 import { useMyContext } from "../Context/globalPathContext";
 import { FaRegFolder } from "react-icons/fa";
+import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
+
 
 let fileDetails: string[] = [];
 
@@ -9,7 +11,7 @@ function FolderList() {
   const [directoryItem, setDirectoryItem] = useState([]);
   const context = useMyContext();
   const tableRef = useRef(null);
-
+ 
   const handleTdClick = async (item: string) => {
     const itemType = await invoke('check_file_extension', { path: item });
     if (itemType == null) {
@@ -61,8 +63,34 @@ function FolderList() {
       window.removeEventListener('resize', setTableHeight);
     };
   }, []);
+  
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
+  const handleScroll = () => {
+    if (tableRef.current) {
+      setShowScrollButton(tableRef.current.scrollTop > 0);
+    }
+  };
+
+  const scrollToTop = () => {
+    if (tableRef.current) {
+      tableRef.current.scrollTop = 0;
+    }
+  };
+
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (tableRef.current) {
+        tableRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
   return (
+    
     <div className="table-container" ref={tableRef}>
       <table className="table table-striped table-primary mb-0 table-hover">
         <thead className="custom-table-heading">
@@ -81,11 +109,19 @@ function FolderList() {
                 <span className="me-2"><FaRegFolder color="green"/></span>
                 {getFileName(item)}
               </td>
+              
             </tr>
           ))}
         </tbody>
+        {showScrollButton && (
+        <button className="scroll-to-top-button" onClick={scrollToTop}>
+        <MdOutlineKeyboardDoubleArrowUp />
+        </button>
+      )}
       </table>
+
     </div>
+    
   );
 }
 

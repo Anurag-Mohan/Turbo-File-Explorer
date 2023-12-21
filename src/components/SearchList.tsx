@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api";
-import { useEffect, useState ,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMyContext } from '../Context/globalPathContext';
 import { useNavigate } from "react-router-dom";
 import { FaRegFolder } from "react-icons/fa";
@@ -32,7 +32,6 @@ function SearchList() {
     setSearchResultsCount(context.globalSearchState.length);
   }, [context.globalSearchState]);
 
-
   useEffect(() => {
     const setTableHeight = () => {
       if (tableRef.current) {
@@ -44,7 +43,6 @@ function SearchList() {
     setTableHeight();
     window.addEventListener('resize', setTableHeight);
 
-  
     return () => {
       window.removeEventListener('resize', setTableHeight);
     };
@@ -52,30 +50,40 @@ function SearchList() {
 
   return (
     <>
-      <div className="search-results-count">
-        Total Search Results: {searchResultsCount}
-      </div>
       <div className="table-container" ref={tableRef}>
-      <table className="table  table-hover table-striped table-danger">
-      <thead className="custom-table-heading">
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {directoryItem.map((item, index) => (
-            <tr style={{ cursor: "pointer" }} key={index}>
-              <td onDoubleClick={() => {
-                handleTdClick(item);
-              }}>
-                <span className="me-2"><FaRegFolder color="red" /></span>
-                {getFileName(item)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+        {searchResultsCount === 0 ? (
+          <p className="no-results-message">No results found</p>
+        ) : (
+          <table className="table table-hover table-striped table-danger">
+            <thead className="custom-table-heading">
+              <tr>
+                <th>
+                  <span className="name-header">Name</span>
+                  <span className="results-count-header">
+                    (Total Results:{" "}
+                    <span className="total-results-color">{searchResultsCount}</span>)
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {directoryItem.map((item, index) => (
+                <tr style={{ cursor: "pointer" }} key={index}>
+                  <td
+                    onDoubleClick={() => {
+                      handleTdClick(item);
+                    }}
+                  >
+                    <span className="me-2">
+                      <FaRegFolder color="red" />
+                    </span>
+                    {getFileName(item)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </>
   );

@@ -24,31 +24,34 @@ export function SearchBar() {
     setSearchValue(event.target.value);
   };
 
+  const [buttonText, setButtonText] = useState('Search');
+  const [buttonDisabled, setButtonDisabled] = useState(false); 
 
-   async function handleSubmit  (event:React.FormEvent<HTMLFormElement>)  {
-    
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const searchText = searchValue;
+    const searchText = searchValue.trim();
 
-    
-    if(searchText==" "){
+    if (searchText === "") {
       return;
-    }
-    else{
-    context.setGlobalSearchState(
-      await invoke("search_function", {
-        path: context.globalState,
-        searchInp: searchText,
-      })
-    );
-    }
-    console.log(searchedList);
+    } else {
+      setButtonText('Searching');
+      setButtonDisabled(true); 
 
-    setSearchValue(" ");
+      context.setGlobalSearchState(
+        await invoke("search_function", {
+          path: context.globalState,
+          searchInp: searchText,
+        })
+      );
+
+      setButtonText('Search');
+      setButtonDisabled(false);
+    }
+
+    setSearchValue("");
     navigate("Slist");
-  };
-
+  }
 
   return (
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
@@ -73,32 +76,29 @@ export function SearchBar() {
         </div>
 
         <a className="navbar-brand text-white ">
-          <h2>
+          <h2 >
             Turbo
-            <span
-              style={{
-                fontSize: "40px",
-                color: "#0dcaf0",
-              }}
+            <span className="animated-x"
+             
             >
-              X
+             
             </span>
             plorer
           </h2>
         </a>
-        <form className="d-flex" role="search" onSubmit={(event)=>{handleSubmit(event)}}>
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder={context.globalState}
-            aria-label="Search"
-            onChange={(event)=>{handleChange(event)}}
-            style={{ backgroundColor: '#c2b693', color: 'black' }}
-          />
-          <button className="btn btn-outline-info" type="submit">
-            Search
-          </button>
-        </form>
+        <form className="d-flex" role="search" onSubmit={(event) => { handleSubmit(event) }}>
+        <input
+          className="form-control me-2"
+          type="search"
+          placeholder={context.globalState}
+          aria-label="Search"
+          onChange={(event) => { handleChange(event) }}
+          style={{ backgroundColor: '#c2b693', color: 'black' }}
+        />
+        <button className="btn btn-outline-info" type="submit" disabled={buttonDisabled}>
+          {buttonText}
+        </button>
+      </form>
       </div>
     </nav>
   );
