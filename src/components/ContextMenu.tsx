@@ -45,14 +45,14 @@ const ContextMenu = ({ visible, position, onItemClick }) => {
       </div>
       <div className="menu-item" onClick={() => onItemClick('cut')}>
         <div>
-         <CiFileOn /> Paste
+         <CiFileOn style={{ marginRight: '8px' }} /> Paste
           <span className="shortcut">(Ctrl+V)</span>
         </div>
       </div>
       <div className="menu-item" onClick={() => onItemClick('cut')}>
         <div>
           <PiScissors /> Cut
-          <span className="shortcut">(Ctrl+V)</span>
+          <span className="shortcut">(Ctrl+X)</span>
         </div>
       </div>
       <div className="menu-item" onClick={() => onItemClick('rename')}>
