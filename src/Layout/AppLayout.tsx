@@ -15,7 +15,7 @@ import { useMyContext } from "../Context/globalPathContext";
 import { useState } from "react";
 import React, { useEffect } from 'react';
 import { invoke } from "@tauri-apps/api";
-
+import { PiHardDrivesDuotone } from "react-icons/pi";
 
 interface Volume {
   name: string;
@@ -60,6 +60,9 @@ function AppLayout() {
       getVolume();
   
   },[context.globalState])
+
+  
+
   return (
     <>
     
@@ -71,12 +74,10 @@ function AppLayout() {
           minHeight: "89.5vh",
         }}
       >
-        <Sidebar backgroundColor="#052545" width="210px"
-       
-        >
+        <Sidebar backgroundColor="#052545" width="210px">
           <div className="sidebar-heading mt-3 mb-3">Quick Access</div>
           <Menu>
-  <MenuItem
+          <MenuItem
     icon={<FaDesktop />}
     component={<Link to={"List"} />}
     onClick={() => {
@@ -223,7 +224,7 @@ function AppLayout() {
 </Menu>
 
 <hr />
-         <div className="sidebar-heading mt-3 m-3">Drive</div>
+         <div className="sidebar-heading mt-3 m-3"><PiHardDrivesDuotone /> Drive</div>
           {
             volumes.map(
              (volume)=>(
@@ -233,13 +234,15 @@ function AppLayout() {
           }
         </Sidebar>
         <div style={{
-          width:"100vw",
-          height:"inherit"
+         
+          width: "100vw",
+          height: "inherit",
+          
         }}>
         <Outlet  />
         </div>
       </div>
-      
+     
     </>
   );
 }

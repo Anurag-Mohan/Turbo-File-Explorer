@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useMyContext } from "../Context/globalPathContext";
 import { FaRegFolder } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
-
+import ContextMenu from './ContextMenu';
 
 let fileDetails: string[] = [];
 
@@ -11,7 +11,38 @@ function FolderList() {
   const [directoryItem, setDirectoryItem] = useState([]);
   const context = useMyContext();
   const tableRef = useRef(null);
- 
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+  
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+     const menuHeight = 250; 
+     const adjustedTop = Math.min(e.clientY, window.innerHeight - menuHeight);
+    
+    setContextMenuVisible(true);
+    setContextMenuPosition({ top: adjustedTop, left: e.clientX });
+  };
+
+  const handleMenuItemClick = async (action) => {
+   
+  setContextMenuVisible(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      
+      if (contextMenuVisible && !e.target.closest(".context-menu")) {
+        setContextMenuVisible(false);
+      }
+    };
+      window.addEventListener("click", handleClickOutside);
+
+    
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [contextMenuVisible]);
+
   const handleTdClick = async (item: string) => {
     const itemType = await invoke('check_file_extension', { path: item });
     if (itemType == null) {
@@ -100,16 +131,17 @@ function FolderList() {
         </thead>
         <tbody>
           {directoryItem.map((item) => (
-            <tr style={{ cursor: "pointer" }} key={item}>
-              <td
-                onDoubleClick={() => {
-                  handleTdClick(item);
-                }}
-              >
+            <tr
+              key={item}
+              onDoubleClick={() => {
+                handleTdClick(item);
+              }}
+              onContextMenu={(e) => handleContextMenu(e)}
+            >
+              <td>
                 <span className="me-2"><FaRegFolder color="green"/></span>
                 {getFileName(item)}
               </td>
-              
             </tr>
           ))}
         </tbody>
@@ -119,7 +151,11 @@ function FolderList() {
         </button>
       )}
       </table>
-
+       <ContextMenu
+        visible={contextMenuVisible}
+        position={contextMenuPosition}
+        onItemClick={handleMenuItemClick}
+      />
     </div>
     
   );

@@ -99,21 +99,58 @@ hr{
   color: hwb(236 2% 60%); 
 }
 
+
+
+.table-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+
+.table-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #3498db; 
+  border-radius: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+
 .scroll-to-top-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  padding: 10px;
-  background-color: #007bff;
+  background-color: #3498db; 
+  color: hsl(0, 0%, 0%);
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
+  padding: 10px;
   cursor: pointer;
-  display: block; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
-
-.table-container {
-  overflow-y: auto;
-  position: relative; 
+.scroll-to-top-button-search
+{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: hsl(24, 92%, 42%); 
+  color: hsl(0, 0%, 0%);
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
 @keyframes gradientMove {
@@ -138,9 +175,66 @@ hr{
   content: 'X';
   display: inline-block;
   background: linear-gradient(90deg, hsl(113, 100%, 42%), #0077cc, hsl(303, 100%, 42%));
-  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   background-size: 200% 100%;
   animation: gradientMove 2s infinite, pulse 1s infinite; 
   font-size: 45px;
+}
+
+.context-menu {
+  background-color: #353535; 
+  color: #e0e0e0; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  padding: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+
+.menu-item {
+  padding: 5px 12px; 
+  margin: 5px 0;
+  transition: background-color 0.3s; 
+}
+.menu-item > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.menu-item:hover {
+  background-color: #555555;
+}
+
+.shortcut {
+  margin-left: 50px;
+  color: #888888;
+  font-size: 80%;
+}
+.sub-menu {
+  position: absolute;
+  top: 0;
+  left: 99%;
+  margin-top: 10.5em;
+  border: 1px solid #ccc;
+  background-color: #353535;
+  z-index: 1;
+  display: flex;
+  flex-direction: column; 
+  border-radius: 3px;
+}
+
+.sub-menu-item {
+  padding: 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.sub-menu-item:hover {
+  background-color: #555555;
+  display: block; 
+  width: 100%; 
+  box-sizing: border-box;
+ 
 }

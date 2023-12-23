@@ -1,8 +1,10 @@
+import React, { useState, useEffect, useRef } from "react";
 import { invoke } from "@tauri-apps/api";
-import { useEffect, useState, useRef } from "react";
 import { useMyContext } from '../Context/globalPathContext';
 import { useNavigate } from "react-router-dom";
 import { FaRegFolder } from "react-icons/fa";
+import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
+import ContextMenu from './ContextMenu';
 
 function getFileName(filePath: string): string {
   const pathParts = filePath.split("\\");
@@ -15,6 +17,36 @@ function SearchList() {
   const [directoryItem, setDirectoryItem] = useState([" "]);
   const [searchResultsCount, setSearchResultsCount] = useState(0);
   const tableRef = useRef(null);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    const menuHeight = 250;
+    const adjustedTop = Math.min(e.clientY, window.innerHeight - menuHeight);
+
+    setContextMenuVisible(true);
+    setContextMenuPosition({ top: adjustedTop, left: e.clientX });
+  };
+
+  const handleMenuItemClick = async (action) => {
+    setContextMenuVisible(false);
+  };
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      
+      if (contextMenuVisible && !e.target.closest(".context-menu")) {
+        setContextMenuVisible(false);
+      }
+    };
+      window.addEventListener("click", handleClickOutside);
+
+    
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [contextMenuVisible]);
 
   async function handleTdClick(item: string) {
     const itemType = await invoke('check_file_extension', { path: item });
@@ -40,13 +72,26 @@ function SearchList() {
       }
     };
 
+    const handleScroll = () => {
+      if (tableRef.current) {
+        setShowScrollButton(tableRef.current.scrollTop > 0);
+      }
+    };
+
     setTableHeight();
     window.addEventListener('resize', setTableHeight);
+    tableRef.current.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('resize', setTableHeight);
     };
   }, []);
+
+  const scrollToTop = () => {
+    if (tableRef.current) {
+      tableRef.current.scrollTop = 0;
+    }
+  };
 
   return (
     <>
@@ -68,12 +113,15 @@ function SearchList() {
             </thead>
             <tbody>
               {directoryItem.map((item, index) => (
-                <tr style={{ cursor: "pointer" }} key={index}>
-                  <td
-                    onDoubleClick={() => {
-                      handleTdClick(item);
-                    }}
-                  >
+                <tr
+                  style={{ cursor: "pointer" }}
+                  key={index}
+                  onDoubleClick={() => {
+                    handleTdClick(item);
+                  }}
+                  onContextMenu={(e) => handleContextMenu(e)}
+                >
+                  <td>
                     <span className="me-2">
                       <FaRegFolder color="red" />
                     </span>
@@ -85,6 +133,16 @@ function SearchList() {
           </table>
         )}
       </div>
+      {showScrollButton && (
+        <button className="scroll-to-top-button-search" onClick={scrollToTop}>
+          <MdOutlineKeyboardDoubleArrowUp />
+        </button>
+      )}
+      <ContextMenu
+        visible={contextMenuVisible}
+        position={contextMenuPosition}
+        onItemClick={handleMenuItemClick}
+      />
     </>
   );
 }
