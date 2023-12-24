@@ -16,6 +16,7 @@ import { useState } from "react";
 import React, { useEffect } from 'react';
 import { invoke } from "@tauri-apps/api";
 import { PiHardDrivesDuotone } from "react-icons/pi";
+import driveIcon from "../assets/server.png"
 
 interface Volume {
   name: string;
@@ -224,7 +225,7 @@ function AppLayout() {
 </Menu>
 
 <hr />
-         <div className="sidebar-heading mt-3 m-3"><PiHardDrivesDuotone /> Drive</div>
+         <div className="sidebar-heading mt-3 m-3"><img src={driveIcon} alt="DRI" className="icon" /> Drive</div>
           {
             volumes.map(
              (volume)=>(

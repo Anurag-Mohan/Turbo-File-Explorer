@@ -19,8 +19,8 @@ h6{
 }
 
 body{
-  background-color:gray;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: gray;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .quick-icon-size{
   height: 60px;
@@ -237,4 +237,8 @@ hr{
   width: 100%; 
   box-sizing: border-box;
  
+}
+.icon {
+  width: 20px;
+  height: 20px;
 }

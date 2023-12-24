@@ -15,6 +15,7 @@ tauri-build = { version = "1.4", features = [] }
 [dependencies]
 tauri = { version = "1.4", features = [ "shell-all", "path-all"] }
 serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4.31", features = ["serde"] }
 serde_json = "1.0"
 rust_search = "2.0.0"
 opener = "0.6.1"
