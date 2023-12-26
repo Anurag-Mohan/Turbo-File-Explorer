@@ -78,18 +78,23 @@ function FolderList() {
     const getList = async () => {
       try {
         const items = await invoke("get_file_list", { path: context.globalState });
-        setDirectoryItem(items);
-
+  
         const detailsPromises = items.map(async (item) => {
           const fileInfo = await invoke("get_file_info", { path: item });
           return { [item]: fileInfo };
         });
-
-       
+  
         const fileDetailsArray = await Promise.all(detailsPromises);
-
-        
         const combinedFileDetails = Object.assign({}, ...fileDetailsArray);
+  
+        
+        items.sort((a, b) => {
+          const dateA = new Date(combinedFileDetails[a]?.modified_date || 0);
+          const dateB = new Date(combinedFileDetails[b]?.modified_date || 0);
+          return dateB - dateA;
+        });
+  
+        setDirectoryItem(items);
         setFileDetails(combinedFileDetails);
       } catch (error) {
         console.error("error:", error);
@@ -97,6 +102,7 @@ function FolderList() {
     };
     getList();
   }, [context.globalState]);
+  
 
   useEffect(() => {
     const setTableHeight = () => {

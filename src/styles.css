@@ -19,7 +19,7 @@ h6{
 }
 
 body{
-  background-color: gray;
+  background-color: hwb(177 18% 59%);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .quick-icon-size{
@@ -92,12 +92,32 @@ hr{
 .total-results-color {
   color: #69aef4;
 }
+@keyframes beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
 .no-results-message {
   text-align: center;
   margin-top: 40px;
   font-size: 18px;
-  color: hwb(236 2% 60%); 
+  font-weight: bold;
+  color: hwb(0 2% 57%);
+  animation: beat 1s infinite; 
 }
+.no-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
 
 
 

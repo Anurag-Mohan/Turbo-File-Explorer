@@ -22,6 +22,7 @@ import logIcon from "../assets/log.png"
 import lnkIcon from "../assets/link.png"
 import ttfIcon from "../assets/ttf.png"
 import svgIcon from "../assets/svg.png"
+import sadIcon from "../assets/sad.gif"
 function getFileName(filePath: string): string {
   const pathParts = filePath.split("\\");
   return pathParts[pathParts.length - 1];
@@ -167,8 +168,18 @@ function SearchList() {
   return (
     <>
       <div className="table-container" ref={tableRef}>
-        {searchResultsCount === 0 ? (
-          <p className="no-results-message">No results found</p>
+      {searchResultsCount === 0 ? (
+          <div className="no-results-container">
+            <p className="no-results-message" style={{ animation: 'beat 1s infinite' }}>
+             No results found
+            </p>
+            <img
+                src={sadIcon}
+                alt="No results animated GIF"
+                className="power"
+                style={{ width: '60px', marginLeft: '5px' }} 
+              />
+          </div>
         ) : (
           <table className="table table-hover table-striped table-danger">
             <thead className="custom-table-heading">
