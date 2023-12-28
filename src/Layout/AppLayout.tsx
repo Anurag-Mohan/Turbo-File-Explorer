@@ -93,10 +93,11 @@ function AppLayout() {
               "&:hover": {
                 backgroundColor: selectedItemId === 0 ? "#0dcaf0" : "#052545",
                 color: "#065d6d",
-              },
+                },
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}
@@ -121,6 +122,7 @@ function AppLayout() {
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}
@@ -145,6 +147,7 @@ function AppLayout() {
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}
@@ -169,6 +172,7 @@ function AppLayout() {
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}
@@ -193,6 +197,7 @@ function AppLayout() {
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}
@@ -217,6 +222,7 @@ function AppLayout() {
               "&.selected": {
                 backgroundColor: "#0dcaf0",
                 color: "#000099",
+                boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.9)",
               },
               color: "white",
             }}

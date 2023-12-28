@@ -20,15 +20,34 @@ import dllIcon from "../assets/dll.png"
 import logIcon from "../assets/log.png"
 import lnkIcon from "../assets/link.png"
 import svgIcon from "../assets/svg.png"
-function FolderList() {
+import { IoMdRefresh } from "react-icons/io";
+
+interface FolderListProps {}
+
+interface FileDetails {
+  [key: string]: {
+    extension?: string;
+    file_type?: string;
+    size?: string;
+    modified_date?: string;
+  };
+}
+const FolderList: React.FC<FolderListProps> = () => {
   const [directoryItem, setDirectoryItem] = useState([]);
   const context = useMyContext();
   const tableRef = useRef(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
-
+  const [refresh, setRefresh] = useState(false);
   const [fileDetails, setFileDetails] = useState({});
+  const [selectedSizeOption, setSelectedSizeOption] = useState("default");
 
+  const handleSizeOptionChange = (event) => {
+    setSelectedSizeOption(event.target.value);
+  };
+  const handleRefreshClick = () => {
+    setRefresh(!refresh);
+  };
   const handleContextMenu = (e) => {
     e.preventDefault();
     const menuHeight = 250;
@@ -89,10 +108,35 @@ function FolderList() {
   
         
         items.sort((a, b) => {
-          const dateA = new Date(combinedFileDetails[a]?.modified_date || 0);
-          const dateB = new Date(combinedFileDetails[b]?.modified_date || 0);
+        const getSizeValue = (size) => {
+          const sizeParts = size.split(' ');
+          const numericValue = parseFloat(sizeParts[0]) || 0;
+          const unit = sizeParts[1] || '';
+          const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+          const unitIndex = units.indexOf(unit.toUpperCase());
+          return numericValue * Math.pow(1024, unitIndex);
+        };
+
+        const sizeA = getSizeValue(combinedFileDetails[a]?.size);
+        const sizeB = getSizeValue(combinedFileDetails[b]?.size);
+
+        if (selectedSizeOption === "largest") {
+          return sizeB - sizeA;
+        } else if (selectedSizeOption === "smallest") {
+          return sizeA - sizeB;
+        }
+
+        const dateA = new Date(combinedFileDetails[a]?.modified_date || 0);
+        const dateB = new Date(combinedFileDetails[b]?.modified_date || 0);
+
+        if (selectedSizeOption === "newest") {
           return dateB - dateA;
-        });
+        } else if (selectedSizeOption === "oldest") {
+          return dateA - dateB;
+        }
+         return dateB - dateA;
+      });
   
         setDirectoryItem(items);
         setFileDetails(combinedFileDetails);
@@ -101,7 +145,7 @@ function FolderList() {
       }
     };
     getList();
-  }, [context.globalState]);
+  },  [context.globalState, refresh, selectedSizeOption]);
   
 
   useEffect(() => {
@@ -186,10 +230,23 @@ function FolderList() {
   };
   return (
     <div className="table-container" ref={tableRef}>
+   
       <table className="table table-striped table-primary mb-0 table-hover">
         <thead className="custom-table-heading">
           <tr>
-            <th scope="col">Name</th>
+            
+            <th scope="col"> <button className="refresh-button" onClick={handleRefreshClick}>
+            <IoMdRefresh />
+            </button>
+             <select
+             value={selectedSizeOption}
+             onChange={handleSizeOptionChange}>
+             <option value="newest">Newest</option>
+             <option value="oldest">Oldest</option>
+             <option value="largest">Biggest</option>
+             <option value="smallest">Smallest</option>
+             </select>
+             Name</th>
             <th scope="col">Type</th>
             <th scope="col">Size</th>
             <th scope="col">Modified Date</th>
@@ -222,7 +279,9 @@ function FolderList() {
           <button className="scroll-to-top-button" onClick={scrollToTop}>
             <MdOutlineKeyboardDoubleArrowUp />
           </button>
+          
         )}
+        
       </table>
       <ContextMenu
         visible={contextMenuVisible}

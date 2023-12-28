@@ -18,8 +18,7 @@ struct FileDetails {
     file_type: String,
     size: String,
     modified_date: String,
-    extension: String, // Add the extension field here
-}
+    extension: String, }
 
 fn format_size(size: u64) -> String {
     const KB: f64 = 1024.0;
@@ -57,12 +56,12 @@ fn get_file_info(path: String) -> Option<FileDetails> {
     let size = format_size(metadata.len());
     let modified_date = format_date(metadata.modified().ok()?.duration_since(SystemTime::UNIX_EPOCH).ok()?.as_secs());
 
-    // Get the file extension (for files only)
+    
     let extension = if metadata.is_file() {
         let path = Path::new(&path);
         path.extension()?.to_str()?.to_string()
     } else {
-        "N/A".to_string() // Extension doesn't apply to directories
+        "N/A".to_string()
     };
 
     Some(FileDetails {

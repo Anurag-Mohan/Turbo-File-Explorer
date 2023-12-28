@@ -7,7 +7,12 @@ import { PiFilePlusLight } from "react-icons/pi";
 import { PiFolderPlusLight } from "react-icons/pi";
 import { CiFileOn } from "react-icons/ci";
 
-const ContextMenu = ({ visible, position, onItemClick }) => {
+interface ContextMenuProps {
+  visible: boolean;
+  position: { top: number; left: number };
+  onItemClick: (action: string) => void;
+}
+const ContextMenu: React.FC<ContextMenuProps> = ({ visible, position, onItemClick }) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   
 
@@ -61,6 +66,7 @@ const ContextMenu = ({ visible, position, onItemClick }) => {
           <span className="shortcut">(F2)</span>
         </div>
       </div>
+      
       <div
         className="menu-item"
         onMouseEnter={handleNewSubMenuEnter}
